@@ -96,95 +96,95 @@ pdfpagelayout=SinglePage
 \input glyphtounicode.tex
 \pdfgentounicode=1
 
-\title{Paper Title}
+\title{Fusing Loops with AspectJ}
 %If Title is too long, use \titlerunning
 %\titlerunning{Short Title}
 
 %Single insitute
-\author{Firstname Lastname \and Firstname Lastname}
+\author{Nico Ring}
 %If there are too many authors, use \authorrunning
 %\authorrunning{First Author et al.}
-\institute{...}
-
-%Multiple insitutes
-%Currently disabled
-%
-\iffalse
-%Multiple institutes are typeset as follows:
-\author{Firstname Lastname\inst{1} \and Firstname Lastname\inst{2} }
-%If there are too many authors, use \authorrunning
-%\authorrunning{First Author et al.}
-
-\institute{
-Insitute 1\\
-\email{...}\and
-Insitute 2\\
-\email{...}
+\institute{Hasso Plattner Institute\\
+\email{nico.ring@student.hpi.de}
 }
-\fi
-			
+
 \maketitle
 
 \begin{abstract}
-Abstract goes here
+Abstract goes here here h
 \end{abstract}
 
-\keywords{...}
+\keywords{Aspect Oriented Programming, Collection Methods}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}\label{sec:intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\blindtext
+Aspect oriented programming is used to solve cross cutting concerns in an elegant way.
+name image processing as motivation?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Collection Methods}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+High order functions like map or filter are very usefull if you work with collections of any kind.
+They hide away the for-loop and express directly what is done. If you just have a for-loop you cannot see at a glance what the code in the body of it does.
 
-Winery~\cite{Winery} is graphical modeling tool.
 
-\begin{figure}
-Simple Figure
-\caption{Simple Figure}
-\label{fig:simple}
-\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Background}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* AspectJ
+* Java 8
+  * anonymous functions
+  * existing streams
 
-\begin{table}
-\caption{Simple Table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Main Part}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* implementation of the collection class
+  * map and filter
+  * foreach
+  * reduce
+  * high-order functions
+* aspect implementation
+  * pointcuts for map ad filter
+  * around advices for them
+    * how to get the parameter from the call
+  * actual fusing
+    * stack of Operations
+    * fusing on each push
+      -> figure for fusing
+    * fusing of maps -> function composition
+    * fusing of filters -> logical combination with and
+  * lazyness of the solution
+    * apply operations from stack if something needs info about the content of the collection or mutates it.
+    * apply anonymous functions
+* performace comparison
+  * with vs without aspects
+  * expectation: if there are a lot of maps and filters, the aspects will give a performance boost
+  * two diagrams
 
-\label{tab:simple}
-Simple Table
-\end{table}
-
-cref Demonstration: Cref at beginning of sentence, cref in all other cases.
-
-\Cref{fig:simple} shows a simple fact, although \cref{fig:simple} could also show something else.
-
-\Cref{tab:simple} shows a simple fact, although \cref{tab:simple} could also show something else.
-
-\Cref{sec:intro} shows a simple fact, although \cref{sec:intro} could also show something else.
-
-Brackets work as designed:
-<test>
-
-The symbol for powerset is now correct: $\powerset$ and not a Weierstrass p ($\wp$).
-
-\begin{inparaenum}
-\item All these items...
-\item ...appear in one line
-\item This is enabled by the paralist package.
-\end{inparaenum}
-
-``something in quotes'' using plain tex or use \enquote{the enquote command}.
-
-\section{Conclusion and Outlook}
-
-\subsubsection*{Acknowledgments}
-...
-
-In the bibliography, use \texttt{\textbackslash textsuperscript} for ``st'', ``nd'', ...:
-E.g., \enquote{The 2\textsuperscript{nd} conference on examples}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related Work}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* JIT
+* image processing system in LISP
+* existing java 8 streams (do they have loop fusing?)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Future Work}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* decide when to fuse a filter
+* parallel execution with aspects
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+* loop fusion can give an performance boost to the program
+* when to run the fused loops
+* it is difficult to do it with more complex examples
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliographystyle{splncs03}
 \bibliography{paper}
 
-All links were last followed on October 5, 2014.
+All links were last followed on August 30, 2015.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
