@@ -110,7 +110,7 @@ showstringspaces=false}
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 
 \lstdefinelanguage{AspectJ}[]{Java}{
-    morekeywords={declare, pointcut, aspect, before, around, after, returning, throwing, call, execution, this, target, args, within, withincode, initialization, preinitialization, staticinitialization, handler, adviceexecution, cflow, cflowbelow, if, proceed},
+    morekeywords={declare, pointcut, aspect, before, around, after, returning, throwing, call, execution, get, set, this, target, args, within, withincode, initialization, preinitialization, staticinitialization, handler, adviceexecution, cflow, cflowbelow, if, proceed},
     moredelim=[is][\textcolor{darkgray}]{\%\%}{\%\%},
     moredelim=[il][\textcolor{darkgray}]{§§}
 }
@@ -139,7 +139,7 @@ showstringspaces=false}
 \maketitle
 
 \begin{abstract}
-In this paper we present an approach to fuse loops of collection methods with an aspect-oriented solution.
+In this paper we present an approach to fuse loops of collection methods with an aspect-oriented solution\footnote{\url{https://github.com/nicoring/loopFusing}}.
 With anonymous functions it is possible to create high-order methods like map or filter. These can be combined and reused in contrast to for-loops.
 One problem with collection methods is that every method runs its own loop, which can decrease performance. We implemented an aspect which fuses the map and filter calls.
 Then they get lazily applied when the content of the collection is needed.
@@ -284,11 +284,11 @@ A member of the collection should be removed if the filter function returns fals
 
 \subsection{Applying the Fused Operations to the Collection} \label{sub:applying-ops}
 After calling map or filter methods on a collection they are all stored in a stack without beeing executed yet. This happens if a method is called that mutates or uses the content of the collection.
-\lstset{caption=Pointcut for methods which reference to or mutate the inner list of the collection directly., language=AspectJ, label=list:forceCompute}
+\lstset{caption=Pointcut for reference or mutation to the list field of the Collection class. The pointcut for collectValues is to force the computation of the stored loops., language=AspectJ, label=list:forceCompute}
 \lstinputlisting{code/forceCompute.aj}
 \\
 The pointcut for matching on join points for this methods is described in Listing~\ref{list:forceCompute}.
-It includes all methods of the Collection class which access the wrapped list directly.
+It includes all methods of the Collection class which access the wrapped list directly, by using the get and set pointcut designators. They match on a field reference and a field mutation.
 \\
 \lstset{caption=Advice code which executes the stored operations., language=AspectJ, label=list:applyOps}
 \lstinputlisting{code/applyOps.aj}
@@ -296,7 +296,7 @@ Before one of these methods gets executed the before advice described in Listing
 This advice iterates over the stack and applies the fused map and filter operations to the collection.
 Calling map from this advice would cause that it is called again since map mutates the collection, which would lead to endless recursion.
 Therefore the calls to map and filter must be excluded from the forceCompute pointcut.
-This is done with the negation of the cflow pointcut descriptor, which you can see in line 9 of Listing~\ref{list:forceCompute}.
+This is done with the negation of the cflow pointcut descriptor, which you can see in line 5 of Listing~\ref{list:forceCompute}.
 Setting the isFusing flag to false ensures that the map and filter calls are really executed and not bypassed by the around advice for fusing.
 
 \section{Performance Comparison}\label{sec:performance-comparison}
@@ -329,7 +329,6 @@ Figure~\ref{fig:million} and~\ref{fig:ten million} show the results of the bench
 Figure~\ref{fig:million} shows that the performance of the non loop-fusing solution is constantly better for lists of that size.
 It also shows that the computation time for fused loops is constant, whereas the computation time for non fused loops is increasing over time.
 It is probable that the non-fusing computation time will exceed the other if more map operations get applied, but it is not probable that there are many use cases for that.
-\\
 \begin{figure}[ht]
   \centering
   \begin{minipage}[b]{0.49\textwidth}

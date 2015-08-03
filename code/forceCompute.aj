@@ -1,9 +1,5 @@
 pointcut forceCompute():
-  (execution(* Collection.get(..)) ||
-  execution(* Collection.add(..)) ||
-  execution(* Collection.set(..)) ||
-  execution(* Collection.remove(..)) ||
-  execution(* Collection.size()) ||
-  execution(* Collection.isEmpty()) ||
+  (get(List<Integer> Collection.list) ||
+  set(List<Integer> Collection.list) ||
   execution(* Collection.collectValues())) &&
   !cflow(mapOrFilter());
